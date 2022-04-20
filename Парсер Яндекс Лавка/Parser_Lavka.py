@@ -90,7 +90,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
             product_price = product_data.find('span', class_='t18stym3 b1clo64h m493tk9 mqq1kap t1wnuyqt l1pe8tpi')
             try:  # try - тк в процессе извлечения цены, имени... будут встречатся None, пока не найдем нужный класс
-                product_prices.append(str(product_price.text).replace('\xa0₽', ''))
+                product_prices.append(int(str(product_price.text).replace('\xa0₽', '')))
             except:
                 continue
 
