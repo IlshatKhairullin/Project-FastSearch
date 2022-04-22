@@ -16,10 +16,10 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36")
     options.add_argument('--disable-blink-features=AutomationControlled')
 
-    options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
+    # options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
 
     driver = webdriver.Chrome(
-        executable_path=r'C:\Users\Ильшат\Project_FastSearch\venv\chromedriver.exe',
+        executable_path=r'C:\Users\Ильшат\FastSearch_Project\Парсер Яндекс Лавка\chromedriver.exe',
         options=options
     )
 
@@ -29,9 +29,11 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
         driver.find_element_by_xpath("/html/body/div/header/div[4]/button").click()  # четвертый div. copy full xpath
         driver.implicitly_wait(5)  # как только прогрузился сайт, сразу начинается next действие
-
         address_string = driver.find_element_by_class_name('i164506l')
-        address_string.clear()
+        driver.implicitly_wait(5)
+
+        address_string.clear()  # посмотреть как работает метод clear и решить трабл с притягиванием ползунка
+
         address_string.send_keys('Россия, Республика Татарстан, Казань, ' + these_keys[0] + ' улица, ' + these_keys[1])
         sleep(2)
         address_string.send_keys(Keys.SPACE)
@@ -117,9 +119,9 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         json.dump(json_dict, file)  # записываем инфу в json файл
 
     """блок кода только для теста"""
-    # with open('lavka_json', 'r') as file:  # смотрим, что получилось внутри файла
-    #     data = json.load(file)
-    # print(data)
+    with open('lavka_json', 'r') as file:  # смотрим, что получилось внутри файла
+        data = json.load(file)
+    print(data)
 
 
 if __name__ == '__main__':
