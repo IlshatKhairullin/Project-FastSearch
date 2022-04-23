@@ -30,9 +30,11 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         driver.find_element_by_xpath("/html/body/div/header/div[4]/button").click()  # четвертый div. copy full xpath
         driver.implicitly_wait(5)  # как только прогрузился сайт, сразу начинается next действие
         address_string = driver.find_element_by_class_name('i164506l')
-        driver.implicitly_wait(5)
 
-        address_string.clear()  # посмотреть как работает метод clear и решить трабл с притягиванием ползунка
+        sleep(2)
+        address_string.send_keys(Keys.LEFT_CONTROL + 'a')
+        address_string.send_keys(Keys.BACKSPACE)
+        sleep(2)
 
         address_string.send_keys('Россия, Республика Татарстан, Казань, ' + these_keys[0] + ' улица, ' + these_keys[1])
         sleep(2)
