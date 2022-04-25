@@ -25,7 +25,6 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
     try:
         driver.get(url=url)
-        sleep(100)
         driver.implicitly_wait(5)
 
         driver.find_element_by_xpath("/html/body/div/header/div[4]/button").click()  # четвертый div. copy full xpath
