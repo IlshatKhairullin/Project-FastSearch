@@ -6,7 +6,6 @@ from time import sleep
 
 
 def Yandex_Lavka_food_data(address):  # адрес доставки. название улицы_пробел_номер дома, только улица и номер дома
-    these_keys = address.split()  # например, Кубанская 62
 
     """блок кода для получения полной кодировки сайта"""
     url = 'https://lavka.yandex.ru/43/'
@@ -33,7 +32,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         sleep(2)
         address_string.send_keys(Keys.LEFT_CONTROL + 'a')
         sleep(1)
-        address_string.send_keys('Россия, Республика Татарстан, Казань, ' + these_keys[0] + ' улица, ' + these_keys[1])
+        address_string.send_keys('Россия, Республика Татарстан, Казань, ' + str(address))
         sleep(2)
         address_string.send_keys(Keys.SPACE)
         sleep(2)
@@ -129,4 +128,4 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
 
 if __name__ == '__main__':
-    Yandex_Lavka_food_data('Чаткы 8')  # Чаткы 8 для теста
+    Yandex_Lavka_food_data('Академика Парина 4')  # Чаткы 8 для теста
