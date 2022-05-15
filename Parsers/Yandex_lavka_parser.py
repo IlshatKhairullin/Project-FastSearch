@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 
-"""Данная прога работает за 2 мин 13 сек"""
+
 def Yandex_Lavka_food_data(address):  # адрес доставки. название улицы_пробел_номер дома, только улица и номер дома
     these_keys = address.split()  # например, Кубанская 62
 
@@ -19,7 +19,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
     # options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
 
     driver = webdriver.Chrome(
-        executable_path=r'C:\Users\Ильшат\FastSearch_Project\Parsers\chromedriver.exe',
+        executable_path=r'C:\Users\Ильшат\FastSearch_Project\Test_file\chromedriver.exe',
         options=options
     )
 
@@ -30,20 +30,22 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         driver.find_element_by_xpath("/html/body/div/header/div[4]/button").click()  # четвертый div. copy full xpath
         driver.implicitly_wait(5)  # как только прогрузился сайт, сразу начинается next действие
         address_string = driver.find_element_by_class_name('i164506l')
-
         sleep(2)
         address_string.send_keys(Keys.LEFT_CONTROL + 'a')
-        address_string.send_keys(Keys.BACKSPACE)
-        sleep(2)
-
+        sleep(1)
         address_string.send_keys('Россия, Республика Татарстан, Казань, ' + these_keys[0] + ' улица, ' + these_keys[1])
         sleep(2)
         address_string.send_keys(Keys.SPACE)
         sleep(2)
         driver.find_element_by_class_name('l1xltboq').click()
         sleep(2)
+
+        if driver.find_element_by_css_selector('body > div:nth-child(10) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r3puqto.n1afsh9v.l1pe8tpi').text != 'Ура, Лавка доставляет к вам':
+            # print('Строка для проверки того, что по данному адресу доставки нет')
+            return "По данному адресу Яндекс Лавка не доставляет"
+
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/div/div/div[1]/div[2]/div[2]/button').click()
-        sleep(3)
+        sleep(2)
 
         with open('html_code.html', 'w', encoding='utf-8') as file:
             file.write(driver.page_source)
@@ -127,4 +129,4 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
 
 if __name__ == '__main__':
-    Yandex_Lavka_food_data('Кубанская 54')
+    Yandex_Lavka_food_data('Чаткы 8')  # Чаткы 8 для теста
