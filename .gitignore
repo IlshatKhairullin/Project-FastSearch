@@ -1,0 +1,18 @@
+/venv/
+/.idea/
+/Test_file.py
+/Парсер Яндекс Лавка/chromedriver.exe
+/Парсер Яндекс Лавка/html_code.html
+/Парсер Яндекс Лавка/lavka_json
+/Parsers/chromedriver.exe
+/Parsers/html_code.html
+/Parsers/lavka_json
+/Parsers/html_сode1.html
+/Parsers/perekrestok.json
+/Parsers/index.html
+/Parsers/all_categories_dict.json
+/Parsers/Metro_json
+/Parsers/all_categories.json
+/Test_file/
+/Bot/html_code.html
+/Bot/lavka_json
