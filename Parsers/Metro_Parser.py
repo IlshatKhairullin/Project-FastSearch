@@ -1,10 +1,8 @@
-import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import json
 from time import sleep
-import lxml
 
 
 def Metro(address):
@@ -14,14 +12,10 @@ def Metro(address):
     URL = 'https://online.metro-cc.ru'
 
     # Мой headers
-    headers = {
-        "Accept": "*/*",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36 OPR/84.0.4316.50"
-    }
     # Эмилуятор гугл хрома
     options = webdriver.ChromeOptions()
     options.add_argument(
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.72")
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.72")
     options.add_argument('--disable-blink-features=AutomationControlled')
 
     # Сам драйвер гугла
@@ -48,31 +42,35 @@ def Metro(address):
             address_string.send_keys(Keys.LEFT_CONTROL + 'a')
             address_string.send_keys(Keys.BACKSPACE)
             sleep(3)
-
             # Ввод адреса  Казань, Кубанская улица, 62/14
             address_string.send_keys(
-                'Россия, Республика Татарстан, Казань, ' + these_keys[0] + ' улица, ' + these_keys[1])
+                'Россия, Республика Татарстан, Казань, улица, ' + these_keys[0] + ' ' + these_keys[1] + ' ,д ' +
+                these_keys[2])
             sleep(3)
+
+            address_string.send_keys(Keys.ENTER)
+            address_string.send_keys(Keys.ENTER)
+            sleep(1)
 
             # Делаем спейс и ждём (выбор адреса предложенной строкой)
             address_string.send_keys(Keys.SPACE)
             sleep(5)
 
+            if driver.find_element_by_xpath(
+                    '/html/body/div[9]/div/div/div/div[2]/div[1]/div[3]/p[2]').text == 'Необходимо указать номер дома':
+                print('По вашему адресу доставки нет')
+                return
+            else:
+                pass
+
             # Нажимаем сохранить адрес
-            driver.find_element_by_xpath('/html/body/div[7]/div/div/div/div[2]/div[1]/div[3]/div[1]/button').click()
-            sleep(3)
-
-            # Нажимаем сохранить адрес (2,так как 1 не всегда срабатывает)
-            driver.find_element_by_xpath('/html/body/div[7]/div/div/div/div[2]/div[1]/div[3]/div[1]/button').click()
-            sleep(3)
-
-            # Наш город - Казань? (Да)
-            driver.find_element_by_xpath(
-                '/html/body/div[3]/div/div/div[1]/div[2]/div/div[1]/div[2]/div[1]/div[1]/div/div[2]/button[1]').click()
+            driver.find_element_by_css_selector(
+                'body > div.dialog-root > div > div > div > div.receipt-order > div:nth-child(1) > div.obtainment-delivery > div.obtainment-delivery__address > button').click()
             sleep(3)
 
             # Открываем категории
-            driver.find_element_by_xpath('/html/body/div[3]/div/div/div[1]/div[2]/div/div[2]/div/div/button').click()
+            driver.find_element_by_css_selector(
+                '#__layout > div > div.main.main--index > div.content-page > div.header-top > div > div.header-nav.header-nav--mobile-hidden > div > div > button').click()
             sleep(3)
 
         except Exception as ex:
@@ -113,7 +111,6 @@ def Metro(address):
 
     product_prices = []
     product_names = []
-    product_amount = []
 
     # Достали все ссылки категорий
     for i in list(all_categories.values())[1:11 + 1]:
@@ -147,7 +144,6 @@ def Metro(address):
             except:
                 continue
 
-            product_amounts = product_data.find()
     driver.close()
     driver.quit()
 
@@ -162,7 +158,7 @@ def Metro(address):
 
 
 def main():
-    Metro('Кубанская 62/14')
+    Metro('Польская Киска 2')
 
 
 if __name__ == "__main__":
