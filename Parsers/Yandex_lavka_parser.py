@@ -1,4 +1,3 @@
-import json
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -15,10 +14,10 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36")
     options.add_argument('--disable-blink-features=AutomationControlled')
 
-    # options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
+    options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
 
     driver = webdriver.Chrome(
-        executable_path=r'C:\Users\Ильшат\FastSearch_Project\Test_file\chromedriver.exe',
+        executable_path=r'C:\Users\Ильшат\FastSearch_Project\Parsers\chromedriver.exe',
         options=options
     )
 
@@ -39,7 +38,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         driver.find_element_by_class_name('l1xltboq').click()
         sleep(2)
 
-        if driver.find_element_by_css_selector('body > div:nth-child(10) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r3puqto.n1afsh9v.l1pe8tpi').text != 'Ура, Лавка доставляет к вам':
+        if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r3puqto.n1afsh9v.l1pe8tpi').text != 'Ура, Лавка доставляет к вам':
             # print('Строка для проверки того, что по данному адресу доставки нет')
             return "По данному адресу Яндекс Лавка не доставляет"
 
@@ -118,14 +117,4 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
     # пихаем всю инфу в словарь, название: [цена, вес/кол-во в одной упаковке]
     json_dict = {product_names[i]: [product_prices[i], product_amounts[i]] for i in range(len(product_names))}
 
-    with open('lavka_json', 'w') as file:
-        json.dump(json_dict, file)  # записываем инфу в json файл
-
-    """блок кода только для теста"""
-    with open('lavka_json', 'r') as file:  # смотрим, что получилось внутри файла
-        data = json.load(file)
-    print(data)
-
-
-if __name__ == '__main__':
-    Yandex_Lavka_food_data('Академика Парина 4')  # Чаткы 8 для теста
+    return json_dict
