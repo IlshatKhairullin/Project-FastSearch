@@ -26,41 +26,39 @@ def refresh_data_base():
             connection.autocommit = True  # чтобы автоматически сохранялись изменения, после запроса в sql
 
             # нужно создать объект курсор, для выполнения sql команд
-
             with connection.cursor() as cursor:  # если написать так, то не придется потом закрывать
                 cursor.execute(
                     "SELECT version();"
                 )
 
-                # создание новой таблицы
+            # удаление старой таблицы
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DROP TABLE Yandex_Lavka_food_data;"""
+                )
 
-                with connection.cursor() as cursor:
+                print("[INFO] Table Yandex_Lavka_food_data was deleted")
+
+            # создание новой таблицы
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """CREATE TABLE Yandex_Lavka_food_data(
+                    product_name varchar(200) NOT NULL,
+                    price smallint NOT NULL,
+                    amount varchar(100) NOT NULL);"""
+                )
+
+                print("[INFO] Table created successfully")
+
+            # добавление данных в таблицу
+            with connection.cursor() as cursor:
+                for i in lavka_data_dict.keys():
                     cursor.execute(
-                        """CREATE TABLE Yandex_Lavka_food_data(
-                        product_name varchar(200) NOT NULL,
-                        price smallint NOT NULL,
-                        amount varchar(100) NOT NULL);"""
-                    )
+                        "INSERT INTO Yandex_Lavka_food_data (product_name, price, amount) VALUES (%s, %s, %s)",
+                        (i, lavka_data_dict[i][0], lavka_data_dict[i][1])
+                        )
 
-                    print("[INFO] Table created successfully")
-
-                # удаление старой таблицы
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        """DROP TABLE Yandex_Lavka_food_data;"""
-                    )
-
-                    print("[INFO] Table Yandex_Lavka_food_data was deleted")
-
-                # добавление данных в таблицу
-                with connection.cursor() as cursor:
-                    for i in lavka_data_dict.keys():
-                        cursor.execute(
-                            "INSERT INTO Yandex_Lavka_food_data (product_name, price, amount) VALUES (%s, %s, %s)",
-                            (i, lavka_data_dict[i][0], lavka_data_dict[i][1])
-                            )
-
-                print("[INFO] Data was successfully inserted")
+            print("[INFO] Data was successfully inserted")
 
             # получаем данные из таблицы, для United_parsers, нужно будет переделать, точно то же, но с базы данных инфа
             # with connection.cursor() as cursor:
