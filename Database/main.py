@@ -9,9 +9,9 @@ from Database.config import host, user, password, db_name, port
 def refresh_data_base():
 
     while True:
-        sleep(3600)
+        sleep(10)
         lavka_data_dict = Yandex_Lavka_food_data('')
-        # metro_data_dict = Metro('')
+        # metro_data_dict = Metro('')  # дописать sql-запросы для остальных 2-ух парсеров + разделить по складам
         # perekrestok_data_dict = Perekrestok_shop('')
 
         try:
@@ -30,6 +30,20 @@ def refresh_data_base():
                 cursor.execute(
                     "SELECT version();"
                 )
+
+            # создание изначальной таблицы
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """CREATE TABLE Yandex_Lavka_food_data(
+                        product_name varchar(200) NOT NULL,
+                        price smallint NOT NULL,
+                        amount varchar(100) NOT NULL);"""
+                    )
+
+                    print("[INFO] Table created successfully")
+            except:
+                continue
 
             # удаление старой таблицы
             with connection.cursor() as cursor:
@@ -59,14 +73,6 @@ def refresh_data_base():
                         )
 
             print("[INFO] Data was successfully inserted")
-
-            # получаем данные из таблицы, для United_parsers, нужно будет переделать, точно то же, но с базы данных инфа
-            # with connection.cursor() as cursor:
-            #     cursor.execute(
-            #         """SELECT product_name FROM food_data WHERE food_price ='2';"""
-            #     )
-
-            #     print(cursor.fetchone())
 
         except Exception as _ex:
             print("[INFO] Error while working with PostgreSQL", _ex)

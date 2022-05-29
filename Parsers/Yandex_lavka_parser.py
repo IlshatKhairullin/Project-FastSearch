@@ -38,7 +38,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         driver.find_element_by_class_name('l1xltboq').click()
         sleep(2)
 
-        if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r3puqto.n1afsh9v.l1pe8tpi').text != 'Ура, Лавка доставляет к вам':
+        if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r1dbrdpx.n10d4det.l14lhr1r').text != 'Ура, Лавка доставляет к вам':
             # print('Строка для проверки того, что по данному адресу доставки нет')
             return "По данному адресу Яндекс Лавка не доставляет"
 
