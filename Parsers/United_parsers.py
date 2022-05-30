@@ -23,7 +23,7 @@ def combine_parsers(product_name, address='Кубанская 54'):  # у нас
         )
 
         with connection.cursor() as cursor:
-            sql = "SELECT product_name, price, amount FROM Yandex_Lavka_food_data WHERE product_name ~* %s"
+            sql = "SELECT product_name, price, amount FROM Lavka_food_data WHERE product_name ~* %s"
             search_product = "\m{}\M".format(product_name)
             cursor.execute(sql, (search_product,))
             prod_from_db = cursor.fetchall()

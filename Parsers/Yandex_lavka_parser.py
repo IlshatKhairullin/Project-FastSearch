@@ -39,7 +39,6 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         sleep(2)
 
         if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r1dbrdpx.n10d4det.l14lhr1r').text != 'Ура, Лавка доставляет к вам':
-            # print('Строка для проверки того, что по данному адресу доставки нет')
             return "По данному адресу Яндекс Лавка не доставляет"
 
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/div/div/div[1]/div[2]/div[2]/button').click()
@@ -92,20 +91,20 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
 
         for product_data in a_lot_of_product_data:  # избегание лишней информации, иначе будут парсится нули для списка цен
 
-            product_price = product_data.find('span', class_='t18stym3 b1clo64h m493tk9 mqq1kap t1wnuyqt l1pe8tpi')
+            product_price = product_data.find('span', class_='t18stym3 b1clo64h m493tk9 m1fg51qz tnicrlv l14lhr1r')
             try:  # try - тк в процессе извлечения цены, имени... будут встречатся None, пока не найдем нужный класс
                 product_prices.append(int(str(product_price.text).replace('\xa0₽', '')))
             except:
                 continue
 
             product_name = product_data.find('h3',
-                                             class_='toyntmz t18stym3 bw441np r88klks r3puqto n1afsh9v l1pe8tpi c10d4det')
+                                             class_='toyntmz t18stym3 bw441np r88klks r1dbrdpx n10d4det l14lhr1r c10zw1sq')
             try:
                 product_names.append(product_name.text)
             except:
                 continue
 
-            product_amount = product_data.find('span', class_='t18stym3 bw441np r88klks r3puqto t9zvddw l1pe8tpi')
+            product_amount = product_data.find('span', class_='t18stym3 bw441np r88klks r1dbrdpx t1dh4tmf l14lhr1r')
             try:
                 product_amounts.append(product_amount.text)
             except:
