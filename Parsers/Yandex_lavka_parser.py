@@ -5,16 +5,15 @@ from time import sleep
 
 
 def Yandex_Lavka_food_data(address):  # адрес доставки. название улицы_пробел_номер дома, только улица и номер дома
-
-    """блок кода для получения полной кодировки сайта"""
     url = 'https://lavka.yandex.ru/43/'
 
     options = webdriver.ChromeOptions()
     options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36")
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36")
     options.add_argument('--disable-blink-features=AutomationControlled')
 
-    options.add_argument('--headless')  # ДЛЯ тестировщика - закоментить эту строку, для удобства
+    options.add_argument('--headless')
 
     driver = webdriver.Chrome(
         executable_path=r'C:\Users\Ильшат\FastSearch_Project\Parsers\chromedriver.exe',
@@ -38,7 +37,10 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
         driver.find_element_by_class_name('l1xltboq').click()
         sleep(2)
 
-        if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > div.t1vrfrqt.t18stym3.bw441np.r88klks.r1dbrdpx.n10d4det.l14lhr1r').text != 'Ура, Лавка доставляет к вам':
+        if driver.find_element_by_css_selector('body > div:nth-child(11) > div:nth-child(3) > div > div > div > '
+                                               'div.mdq9h8o > div > div.a1hnj29o > div > div.c1d3b3d4 > div > '
+                                               'div.t1vrfrqt.t18stym3.bw441np.r88klks.r1dbrdpx.n10d4det.l14lhr1r').text \
+                != 'Ура, Лавка доставляет к вам':
             return "По данному адресу Яндекс Лавка не доставляет"
 
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/div/div/div[1]/div[2]/div[2]/button').click()
@@ -113,7 +115,7 @@ def Yandex_Lavka_food_data(address):  # адрес доставки. назва�
     driver.close()
     driver.quit()
 
-    # пихаем всю инфу в словарь, название: [цена, вес/кол-во в одной упаковке]
+    # передаем всю инфу в словарь, название: [цена, вес/кол-во в одной упаковке]
     json_dict = {product_names[i]: [product_prices[i], product_amounts[i]] for i in range(len(product_names))}
 
     return json_dict
